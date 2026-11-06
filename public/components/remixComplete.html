@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    >
+    <title>完了</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+
+    <script src="../js/vendor/lucide.min.js"></script>
+
+    <main class="complete-page">
+
+      <div class="complete-icon">
+        <i data-lucide="check-circle"></i>
+      </div>
+
+      <h2 id="title" class="complete-title"></h2>
+      <p id="message" class="complete-message"></p>
+
+      <button id="toHome" class="app-btn complete-btn">
+        ホームへ戻る
+      </button>
+    </main>
+
+    <script type="module" src="../js/pages/remixComplete.js"></script>
+    <script>
+      lucide.createIcons();
+    </script>
+  </div>
+</body>
+</html>

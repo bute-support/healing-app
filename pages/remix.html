@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    >
+    
+    <title>ミックス作成</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+
+  <script src="../js/vendor/lucide.min.js"></script>
+
+  <header class="page-header">
+      <button class="back-btn icon-btn" id="backRemix">
+        <i data-lucide="arrow-left"></i>
+      </button>
+
+      <h2>ミックス作成</h2>
+  </header>
+
+  <main class="remix-select-page">
+    <h3 class="remix-select-heading">保存済み音</h3>
+
+    <div id="soundSelectList"></div>
+    <button id="confirmSounds" class="app-btn remix-select-btn">
+      音を決定
+    </button>
+  </main>
+
+  <div id="toast">
+    <span id="toastText"></span>
+  </div>
+
+  <div id="premiumContainer"></div>
+  <script type="module" src="../js/pages/remixPage.js"></script>
+
+  </div>
+</body>
+</html>

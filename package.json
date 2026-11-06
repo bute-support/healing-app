@@ -1,0 +1,28 @@
+{
+  "name": "healing-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@capacitor-community/admob": "^8.2.1",
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/browser": "^8.0.4",
+    "@capacitor/cli": "^8.5.0",
+    "@capacitor/core": "^8.5.0",
+    "@capacitor/ios": "^8.5.0",
+    "@capgo/native-purchases": "^8.7.0",
+    "@revenuecat/purchases-capacitor": "^13.6.0",
+    "lucide": "^1.59.0"
+  },
+  "devDependencies": {
+    "vite": "^8.3.4"
+  }
+}

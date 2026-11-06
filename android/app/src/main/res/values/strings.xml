@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">今日の癒し</string>
+    <string name="title_activity_main">今日の癒し</string>
+    <string name="package_name">com.Butebura.healingapp</string>
+    <string name="custom_url_scheme">com.Butebura.healingapp</string>
+    <string name="admob_app_id">ca-app-pub-3588583677502543~7181441192</string>
+</resources>

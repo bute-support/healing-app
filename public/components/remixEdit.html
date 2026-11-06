@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    >
+    <title>ミックス編集</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+
+    <script src="../js/vendor/lucide.min.js"></script>
+
+    <!-- 設定UI差し込み用 -->
+    <div id="settingsContainer"></div>
+      <header class="page-header">
+        <button class="back-btn icon-btn" id="backRemixEdit">
+          <i data-lucide="arrow-left"></i>
+        </button>
+
+        <h2>ミックス編集</h2>
+      </header>
+
+      <main class="edit-page">
+      <label class="edit-label">ミックス名</label>
+        <input id="editName" class="edit-input" maxlength="20" placeholder="ミックス名を入力">
+
+        <label class="edit-label">音を選択</label>
+        <div id="soundList"></div>
+
+          <button id="saveEdit" class="app-btn">
+            保存
+          </button>
+      </main>
+
+      <div id="toast">
+        <span id="toastText"></span>
+      </div>
+
+      <script type="module" src="../js/pages/remixEdit.js"></script>
+      <script>lucide.createIcons();</script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<div class="app-container">
+
+<div id="settingsOverlay">
+  <div class="settings-panel">
+    <h2 class="settingsTitle">設定</h2>
+
+    <ul class="settings-list">
+
+      <li class="setting-item">
+        <button type="button" id="favoriteSettingBtn" class="setting-btn" aria-expanded="false">
+          お気に入り
+        </button>
+        <div class="setting-detail">
+          <div id="favoriteCount"></div>
+          <button id="showFavoriteSetting" class="app-btn auto-width-btn">
+            お気に入り一覧を見る
+          </button>
+
+          <div id="favoriteList" class="hidden"></div>
+        </div>
+      </li>
+
+      <li class="setting-item">
+        <button class="setting-btn" aria-expanded="false">オフタイマー</button>
+        <div class="setting-detail">
+          <div class="timer-picker">
+            <div class="wheel">
+              <select id="hourSelect"></select>
+              <span>時間</span>
+            </div>
+
+            <div class="wheel">
+              <select id="minuteSelect"></select>
+              <span>分</span>
+            </div>
+          </div>
+
+          <!-- ボタンエリア -->
+          <div class="timer-actions">
+            <button id="startTimerBtn" class="timer-start-btn app-btn">開始</button>
+            <button id="cancelTimerBtn" class="timer-start-btn app-btn">停止</button>
+          </div>
+
+          <!-- 状態表示 -->
+          <p id="timerStatus" aria-live="polite">タイマー未設定</p>
+          
+        </div>
+      </li>
+
+      <li class="setting-item">
+        <button class="setting-btn" aria-expanded="false">ディスプレイ</button>
+        <div class="setting-detail">
+          <div class="mode-picker">
+            <button id="lightMode" class="mode-btn app-btn">ライト</button>
+            <button id="darkMode" class="mode-btn app-btn">ダーク</button>
+          </div>
+        </div>
+      </li>
+
+      <li class="setting-item">
+        <button class="setting-btn" aria-expanded="false">再生履歴</button>
+
+        <div class="setting-detail">
+          <div id="historyList"></div>
+          <button id="showAllHistory" type="button" class="app-btn auto-width-btn">履歴を見る</button>
+        </div>
+      </li>
+
+      <li class="setting-item">
+        <button class="setting-btn">再生履歴削除設定</button>
+
+          <div class="setting-detail history-setting">
+
+          <!-- 現在設定 -->
+          <div class="history-status">
+            <p>
+              現在：
+            <span id="historyModeText">
+              7日後に自動削除中
+            </span>
+            </p>
+          </div>
+          <!-- 削除期間選択 -->
+          <div class="history-mode">
+            <button data-mode="7">
+              7日
+            </button>
+            <button data-mode="30">
+              30日
+            </button>
+            <button data-mode="off">
+              削除しない
+            </button>
+          </div>
+          <!-- 説明 -->
+          <p class="history-note">
+            ※変更すると保存済み履歴にも適用されます
+          </p>
+          <!-- 全削除 -->
+          <button id="clearHistory" class="app-btn auto-width-btn">
+            履歴を全削除
+          </button>
+          </div>
+      </li>
+
+      <li class="setting-item">
+        <button type="button" id="savedSettingBtn" class="setting-btn" aria-expanded="false">
+          保存
+        </button>
+          <div class="setting-detail">
+            <div id="savedCount"></div>
+              <button id="showAllSaved" class="app-btn auto-width-btn">
+                保存一覧を見る
+              </button>
+              <div id="savedSoundList" class="hidden"></div>
+        </div>
+      </li>
+
+      <li class="setting-item">
+        <button type="button" id="savedMixSettingBtn" class="setting-btn" aria-expanded="false">
+          ミックス
+        </button>
+          <div class="setting-detail">
+            <!-- 作成ボタン -->
+            <button id="openMixCreate" class="app-btn  auto-width-btn">
+              ミックス作成
+            </button>
+            <!-- 作成済一覧 -->
+            <div id="savedMixList"></div> 
+              <button
+                id="showAllMix"
+                type="button"
+                class="app-btn auto-width-btn">
+              </button>
+          </div>
+      </li>
+
+      <li class="setting-item">
+        <button class="setting-btn" aria-expanded="false">
+          プレミアムについて
+        </button>
+        <div class="setting-detail">
+          <div id="premiumArea"></div>
+        </div>
+      </li>
+
+      <!-- 利用規約 -->
+      <li class="setting-item">
+        <button type="button" id="termsBtn" class="setting-btn">
+          ご利用について
+        </button>
+      </li>
+    </ul>
+
+    <button id="closeSettings" type="button" class="icon-btn" aria-label="close">
+      <i data-lucide="x"></i>
+    </button>
+  </div>
+
+  <!-- =========================
+    ミックスメニュー
+　 ========================= -->
+  <div id="mixMenuOverlay" class="hidden">
+    <div class="mixMenuCard">
+      <button id="menuEdit" type="button">
+        編集
+      </button>
+      <button id="menuDelete" type="button">
+        削除
+      </button>
+      <button id="menuQueue" type="button">
+        キュー先頭
+      </button>
+      <button id="menuCancel" type="button">
+        キャンセル
+      </button>
+    </div>
+  </div>
+      
+</div>
+<!-- =========================
+ 　　　　 保存メニュー
+========================= -->
+  <div id="limitModal" class="limit-modal hidden">
+    <div class="limit-card">
+
+      <h2 id="limitTitle"></h2>
+        <p id="limitCount"></p>
+        <p id="limitDescription"></p>
+
+        <button id="limitManageBtn" class="app-btn">
+          保存一覧を見る
+        </button>
+        <button id="limitPremiumBtn" class="premium-btn">
+          プレミアムにする
+        </button>
+        <button id="limitCancelBtn" class="app-btn">
+          キャンセル
+        </button>
+    </div>
+  </div>
+</div>

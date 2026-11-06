@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        >
+        <title>動画再生</title>
+        <link rel="stylesheet" href="../css/style.css">
+    </head>
+    <body>
+      <div class="app-container">
+
+        <script src="../js/vendor/lucide.min.js"></script>
+
+        <div class="movie-stage">
+
+          <video id="video" playsinline></video>
+          
+          <button class="movie-control-btn movie-back-btn icon-btn" id="backMovie">
+              <i data-lucide="arrow-left"></i>
+          </button>
+
+          <button id="playBtn" class="movie-control-btn movie-play-btn icon-btn">
+              <i id="playIcon" data-lucide="play"></i>
+          </button>
+          
+        </div>
+
+        <div class="pay-modal hidden" id="payModal">
+            <div class="pay-box">
+                <p>この動画はプレミアム限定です</p>
+                <button id="upgradeBtn" class="premium-btn">アップグレードする</button>
+                <button id="closePay" class="premium-btn">キャンセル</button>
+            </div>
+        </div>
+
+        <script type="module" src="../js/pages/movie.js"></script>
+      </div>
+    </body>
+</html>

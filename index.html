@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#f8fbff">
+    <title>今日の癒し</title>
+    <link rel="apple-touch-icon" href="assets/icon/icon.png">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+
+    <script src="js/vendor/lucide.min.js"></script>
+
+    <div class="browse-page">
+
+      <header class="page-header">
+        <span class="back-btn icon-btn" style="visibility: hidden;" aria-hidden="true">
+          <i data-lucide="settings"></i>
+        </span>
+        <h1 id="title">今日の癒し</h1>
+        <button id="settingsBtn" class="icon-btn" aria-label="settings">
+          <i data-lucide="settings"></i>
+        </button>
+      </header>
+
+      <div id="soundSections"></div>
+    </div>
+
+    <div id="settingsContainer"></div>
+    <div id="premiumContainer"></div>
+    <div id="termsContainer"></div>
+  </div>
+
+  
+  <div id="tutorialOverlay" class="hidden">
+    <div class="tutorial-card">
+
+    <div id="tutorialIcon" class="tutorial-icon"
+         aria-hidden="true"
+         style="--tutorial-icon-color:#7795B5;--tutorial-icon-bg:#F0F4FA;--tutorial-icon-border:#DCE7F5;">
+      <i data-lucide="waves"></i>
+    </div>
+
+    <h2 id="tutorialTitle">ようこそ！</h2>
+
+      <p id="tutorialText">
+        癒しの音を組み合わせて、あなただけの空間を作りましょう。
+      </p>
+
+      <div id="tutorialStep"></div>
+      <div id="tutorialProgress">はじめに</div>
+
+      <div id="tutorialDots" class="tutorial-dots" aria-label="チュートリアルの進行状況">
+        <span class="tutorial-dot active"></span>
+        <span class="tutorial-dot"></span>
+        <span class="tutorial-dot"></span>
+      </div>
+
+      <div class="tutorial-actions">
+        <button id="tutorialBack" class="tutorial-back hidden" type="button">
+          <i data-lucide="arrow-left"></i>
+          <span>戻る</span>
+        </button>
+
+        <button id="tutorialNext" class="app-btn" type="button">
+          次へ
+        </button>
+
+        <button id="tutorialStart" class="app-btn hidden" type="button">
+          はじめる
+        </button>
+      </div>
+      <button id="tutorialSkip" class="tutorial-skip" type="button">
+        スキップ
+      </button>
+    </div>
+  </div>
+
+  <div id="toast">
+    <span id="toastText"></span>
+  </div>
+
+  <script type="module" src="js/pages/index.js"></script>
+  <script src="js/storage/tutorial.js"></script>
+
+</body>
+</html>

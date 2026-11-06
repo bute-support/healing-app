@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    >
+    <title>ミックス名</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-container">
+
+    <script src="../js/vendor/lucide.min.js"></script>
+
+    <header class="page-header">
+        <button class="back-btn icon-btn" id="backRemixName">
+           <i data-lucide="arrow-left"></i>
+        </button>
+
+        <h2>ミックス名</h2>
+    </header>
+
+    <main class="remix-name-page">
+      <label for="mixName" class="remix-name-label">ミックス名を入力</label>
+      <input
+        id="mixName"
+        class="remix-name-input"
+        type="text"
+        autocomplete="off"
+        placeholder="例：夜のリラックスタイム"
+      >
+      <p id="nameError" class="error-text"></p>
+
+      <button id="createMixBtn" class="app-btn remix-name-btn">
+        作成
+      </button>
+    </main>
+
+    <script type="module" src="../js/remixName.js"></script>
+    <script>lucide.createIcons();</script>
+  </div>
+
+</body>
+</html>
