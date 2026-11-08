@@ -15,12 +15,10 @@ function attachPlayClick(container, selector, getList) {
   });
 }
 
-
 // 共通「もっと見る」設定
 export function getTitle(item) {
   return item.title || item.label || item.name || "名称なし";
 }
-
 
 // ユーザーが自由入力した文字列（ミックス名など）を
 // そのままHTMLに差し込むとコードとして実行されてしまうため、
@@ -31,7 +29,6 @@ export function escapeHtml(str) {
   return div.innerHTML;
 }
 
-
 export function createSimpleItem(className) {
   return item => `
     <div class="${className}" data-id="${item.id}">
@@ -39,7 +36,6 @@ export function createSimpleItem(className) {
     </div>
   `;
 }
-
 
 // 共通「もっと見る」
 export function createPreview(root, config, renderLists) {
@@ -58,17 +54,13 @@ export function createPreview(root, config, renderLists) {
     ...config,
 
     onItemClick(current) {
-
       if (config.selector) {
-
         attachPlayClick(
           container,
           config.selector,
           config.getList
         );
-
       }
-
       config.afterClick?.(
         current,
         renderLists

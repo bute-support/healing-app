@@ -34,12 +34,8 @@ function applyCustomerInfo(info) {
 
 let sdkPromise = null;
 
-
-
-
 async function ensureSdk() {
   console.log("[Purchases] ensureSdk entered");
-
   const P = plugin();
 
   if (!P) {

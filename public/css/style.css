@@ -276,7 +276,6 @@ a {
 .category-btn:active {
     transform: scale(.98);
 }
-
 @media (hover: hover) and (pointer: fine) {
     .category-btn:hover {
         transform: translateY(-2px);
@@ -667,7 +666,6 @@ a {
     background: rgba(135, 166, 190, 0.97);
 }
 
-
 /* =========================================================
    05. TUTORIAL
 ========================================================= */
@@ -802,7 +800,6 @@ a {
         0 4px 16px rgba(29, 39, 54, 0.07);
     animation: tutorialCardIn 0.35s ease-out;
 }
-
 /* アイコンの丸い背景 */
 #tutorialOverlay .tutorial-icon {
     display: flex;
@@ -817,7 +814,6 @@ a {
     background: var(--tutorial-icon-bg, #F0F4FA);
     color: var(--tutorial-icon-color, #7795B5);
 }
-
 /* Lucideアイコン */
 #tutorialOverlay .tutorial-icon svg,
 #tutorialOverlay .tutorial-icon i {
@@ -825,12 +821,10 @@ a {
     height: 42px;
     stroke-width: 1.8;
 }
-
 /* タイトル */
 #tutorialOverlay #tutorialTitle {
     width: 100%;
     margin: 0;
-
     color: #292D34;
     font-size: clamp(21px, 5vw, 27px);
     font-weight: 700;
@@ -838,66 +832,54 @@ a {
     letter-spacing: 0.015em;
     overflow-wrap: anywhere;
 }
-
 /* 説明文 */
 #tutorialOverlay #tutorialText {
     width: 100%;
     margin: 16px 0 0;
-
     color: #5C626C;
     font-size: clamp(14px, 3.5vw, 16px);
     font-weight: 400;
     line-height: 1.9;
     overflow-wrap: anywhere;
 }
-
 /* ステップ名・補足 */
 #tutorialOverlay #tutorialStep {
     margin-top: 12px;
     color: #6E7783;
     font-size: 13px;
 }
-
 /* 進捗表示 */
 #tutorialOverlay #tutorialProgress {
     margin-top: 24px;
-
     color: #7A818C;
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.08em;
 }
-
 /* 進捗ドット */
 #tutorialOverlay .tutorial-dots {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-
     margin-top: 12px;
 }
-
 #tutorialOverlay .tutorial-dot {
     width: 7px;
     height: 7px;
     padding: 0;
-
     border: 0;
     border-radius: 50%;
     background: #D9DDE4;
-
     transition:
         width 0.25s ease,
         background-color 0.25s ease;
 }
-
 #tutorialOverlay .tutorial-dot.active {
     width: 22px;
     border-radius: 10px;
     background: var(--tutorial-icon-color, #7795B5);
 }
-
 /* ボタン共通 */
 #tutorialOverlay #tutorialNext,
 #tutorialOverlay #tutorialStart {
@@ -905,61 +887,48 @@ a {
     left: auto;
     right: auto;
     bottom: auto;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     width: 100%;
     min-height: 52px;
     margin-top: 28px;
     padding: 14px 20px;
-
     border: none;
     border-radius: 16px;
-
     background: #303943;
     color: #FFFFFF;
-
     font-family: inherit;
     font-size: 15px;
     font-weight: 600;
     letter-spacing: 0.02em;
-
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
-
     box-shadow: 0 5px 14px rgba(38, 47, 59, 0.14);
-
     transition:
         transform 0.18s ease,
         background-color 0.18s ease,
         box-shadow 0.18s ease;
 }
-
 #tutorialOverlay #tutorialNext:active,
 #tutorialOverlay #tutorialStart:active {
     transform: scale(0.98);
     box-shadow: 0 2px 6px rgba(38, 47, 59, 0.12);
 }
-
 #tutorialOverlay #tutorialNext:focus-visible,
 #tutorialOverlay #tutorialStart:focus-visible {
     outline: 3px solid #9AB8E0;
     outline-offset: 3px;
 }
-
 /* 既存の補助表示を使う場合 */
 #tutorialOverlay .tutorial-next-hint {
     color: #737B86;
     background: rgba(255, 255, 255, 0.65);
     border-color: #E5E8ED;
 }
-
 #tutorialOverlay .tutorial-skip {
     color: #747C87;
 }
-
 /* カードの登場アニメーション */
 @keyframes tutorialCardIn {
     from {
@@ -982,7 +951,6 @@ a {
         font-size: 13px;
     }
 }
-
 /* iPadなどの広い画面 */
 @media (min-width: 768px) {
     #tutorialOverlay .tutorial-card {
@@ -990,19 +958,16 @@ a {
         padding: 42px 38px 36px;
         border-radius: 30px;
     }
-
     #tutorialOverlay .tutorial-icon {
         width: 96px;
         height: 96px;
     }
-
     #tutorialOverlay .tutorial-icon svg,
     #tutorialOverlay .tutorial-icon i {
         width: 44px;
         height: 44px;
     }
 }
-
 /* 小さな画面・横向きでのはみ出し防止 */
 @media (max-height: 560px) {
     #tutorialOverlay .tutorial-card {
@@ -1011,39 +976,32 @@ a {
         padding-top: 18px;
         padding-bottom: 18px;
     }
-
     #tutorialOverlay .tutorial-icon {
         width: 56px;
         height: 56px;
         margin-bottom: 14px;
     }
-
     #tutorialOverlay .tutorial-icon svg,
     #tutorialOverlay .tutorial-icon i {
         width: 28px;
         height: 28px;
     }
-
     #tutorialOverlay #tutorialText {
         margin-top: 10px;
     }
-
     #tutorialOverlay #tutorialProgress {
         margin-top: 14px;
     }
-
     #tutorialOverlay #tutorialNext,
     #tutorialOverlay #tutorialStart {
         margin-top: 16px;
     }
 }
-
 /* 動きを減らす設定を使っている場合 */
 @media (prefers-reduced-motion: reduce) {
     #tutorialOverlay .tutorial-card {
         animation: none;
     }
-
     #tutorialOverlay #tutorialNext,
     #tutorialOverlay #tutorialStart,
     #tutorialOverlay .tutorial-dot {
@@ -1085,7 +1043,6 @@ a {
   width: 92%;
   max-width: 500px;
   margin: var(--space-sm) auto 0;
-
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -1274,53 +1231,39 @@ a {
     width: var(--playback-width);
     height: var(--playback-height);
     min-height: 0;
-
     padding: 0;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     box-sizing: border-box;
-
     /* 横長のガラスボタン */
     background: rgba(255, 255, 255, 0.32);
     backdrop-filter: blur(24px) saturate(135%);
     -webkit-backdrop-filter: blur(24px) saturate(135%);
-
     border: 1px solid rgba(255, 255, 255, 0.55);
     border-radius: 24px;
-
     color: var(--text-primary);
     font-size: var(--text-sm);
     font-weight: 500;
     line-height: 1;
-
     box-shadow:
         0 10px 30px rgba(70, 110, 150, 0.10),
         inset 0 1px 0 rgba(255, 255, 255, 0.45);
-
     cursor: pointer;
     white-space: nowrap;
-
     transition:
         background 0.25s ease,
         border-color 0.25s ease,
         transform 0.2s ease;
 }
-
 .playback-text-btn:hover {
     background: rgba(255, 255, 255, 0.42);
     border-color: rgba(255, 255, 255, 0.7);
     transform: translateY(-1px);
 }
-
 .playback-text-btn:active {
     transform: translateY(1px);
 }
-
-/* ====　index・player：設定ボタンの位置を統一
-  既存のヘッダー配置を活かす　==== */
 .page-header {
     grid-template-columns: var(--header-button-size, clamp(46px, 10vw, 56px)) minmax(0, 1fr) var(--header-button-size, clamp(46px, 10vw, 56px));
 }
@@ -1362,7 +1305,6 @@ a {
     height: var(--header-icon-size, clamp(26px, 4.5vw, 32px));
     flex-shrink: 0;
 }
-
 
 /* =========================================================
    07. MOVIE / PAY MODAL
@@ -1833,7 +1775,6 @@ video:fullscreen {
     margin-left: auto;
     margin-right: auto;
 }
-
 .timer-actions {
     display: flex;
     gap: clamp(8px, 2vw, 14px);
@@ -1921,23 +1862,23 @@ video:fullscreen {
     border-bottom: 1px solid rgba(0, 0, 0, .08);
 }
 .saved-name {
-  flex: 1;
-  min-width: 0;
-  padding: 10px 14px;
-  font: inherit;
-  color: inherit;
-  text-align: left;
-  border:
+    flex: 1;
+    min-width: 0;
+    padding: 10px 14px;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    border:
         clamp(1px, .12vw, 2px)
         solid rgba(0, 0, 0, .08);
     border-radius: var(--radius-md);
     background: rgba(120, 120, 120, .10);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  cursor: pointer;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
 }
 .saved-name:active {
-  opacity: 0.6;
+    opacity: 0.6;
 }
 .deleteSavedBtn,
 .deleteFavoriteBtn {
@@ -2565,7 +2506,7 @@ video:fullscreen {
         min-height: min(88dvh, 600px);
     }
 }
-/* めちゃ小さい端末用*/
+/* 小さい端末用*/
 @media (max-width: 340px) {
     .category-btn {
         width: 92%;
@@ -4871,40 +4812,23 @@ body.dark .deleteFavoriteBtn{
 /* ==============================
    今日の音
    ============================== */
-
 .today-sound-tile {
     position: relative;
 }
-
-
-/* 無料ユーザー：少し暗くする */
-
 .today-sound-tile.locked {
     opacity: 0.5;
 }
-
-
-/* ロック中でも通常のタイルより
-   少し落ち着いた見た目にする */
-
 .today-sound-tile.locked .sound-tile-label,
 .today-sound-tile.locked .sound-tile-subtitle {
     opacity: 0.8;
 }
-
-
-/* 鍵アイコン */
-
 .today-sound-tile.locked
 .sound-tile-label
 svg {
     width: 14px !important;
     height: 14px !important;
-
     margin-right: 4px;
-
     vertical-align: -2px;
-
     flex-shrink: 0;
 }
 .today-lock {
@@ -4914,7 +4838,6 @@ svg {
     margin-right: 4px;
     vertical-align: middle;
 }
-
 .today-lock svg {
     width: 12px !important;
     height: 12px !important;
@@ -4924,7 +4847,6 @@ body.dark .sound-tile{
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.10);
 }
-
 /* =========================
    詳細画面（player）
 ========================= */
@@ -4980,7 +4902,6 @@ body.dark .sound-tile{
     overflow: hidden;
     background: none;
 }
-
 .detail-image {
     display: block;
     width: 100%;
@@ -4992,34 +4913,24 @@ body.dark .sound-tile{
 /* ========================================
    Player カテゴリタグ
 ======================================== */
-
 .detail-tag {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-
   padding: 6px 14px;
-
   border-radius: 999px;
-
   font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.04em;
-
   color: rgba(35, 35, 35, 0.78);
-
   border: 1px solid rgba(255, 255, 255, 0.72);
-
   backdrop-filter: blur(14px) saturate(135%);
   -webkit-backdrop-filter: blur(14px) saturate(135%);
-
   box-shadow:
     0 3px 12px rgba(0, 0, 0, 0.07),
     inset 0 1px 2px rgba(255, 255, 255, 0.65);
-
   box-sizing: border-box;
-
   transition:
     background 0.2s ease,
     box-shadow 0.2s ease;
@@ -5027,9 +4938,7 @@ body.dark .sound-tile{
 .detail-tag svg {
   width: 16px;
   height: 16px;
-
   stroke-width: 2;
-
   flex-shrink: 0;
 }
 /* 水 */
@@ -5084,12 +4993,6 @@ body.dark .sound-tile{
 /* =========================
    ブラウズ画面（トップ）- ヘッダーをplayer画面と揃える
 ========================= */
-
-/* ブラウズ画面：画面幅いっぱいに使う（タブレット対応） */
-
-/* タイルの最小幅を確保しつつ、画面幅に応じて列数が自動で増える */
-
-/* 最低でも2列は維持しつつ、画面が広い時は列数を増やす */
 .sound-grid{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -5111,10 +5014,6 @@ body.dark .sound-tile{
         grid-template-columns: repeat(4, 1fr);
     }
 }
-
-/* 詳細画面：タブレットでも画面幅を有効活用 */
-
-
 /* 各ページ共通：画面幅に対する割合で中央寄せ・タブレット対応 */
 .remix-select-page,
 .edit-page,
@@ -5262,11 +5161,9 @@ body.dark .sound-tile{
         --text-md: 22px;
         --text-lg: 34px;
     }
-
     .detail-image-wrap{
         max-width: 380px;
     }
-
     .action-buttons .icon-btn,
     .page-header .back-btn,
     .page-header .settings-btn,
@@ -5275,7 +5172,6 @@ body.dark .sound-tile{
         height: 72px;
     }
 }
-
 @media (min-width: 1024px){
     #playerTimerBtn{
         font-size: 20px;
@@ -5308,7 +5204,6 @@ body.dark .sound-tile{
     width: 26px;
     height: 26px;
 }
-
 @media (min-width: 1024px){
     .playback-play-btn{
         width: 76px;
@@ -5319,19 +5214,16 @@ body.dark .sound-tile{
         height: 36px;
     }
 }
-
 /* 再生/停止 テキストボタン */
 body.dark .playback-text-btn {
     background: rgba(80, 150, 190, 0.45);
     border-color: rgba(255, 255, 255, 0.15);
     color: #fff;
 }
-
 body.dark .playback-text-btn:hover {
     background: rgba(90, 165, 210, 0.55);
     border-color: rgba(255, 255, 255, 0.25);
 }
-
 .playback-text-btn{
     padding: 10px 28px;
     border-radius: 999px;
@@ -5361,14 +5253,12 @@ body.dark .playback-text-btn{
 #termsOverlay .terms-page {
     padding-bottom: calc(42px + var(--safe-bottom));
 }
-/* ご利用について：フッターの位置調整 */
 #termsOverlay .terms-footer {
     margin-top: 0 !important;
     padding-bottom: calc(100px + var(--safe-bottom)) !important;
     transform: translateY(-8px) !important;
     outline: none !important;
 }
-/* 通知を下部バナー広告の上に表示 */
 #toast {
     bottom: calc(100px + var(--safe-bottom));
 }
@@ -5383,7 +5273,6 @@ body.dark .playback-text-btn{
         var(--space-xl) + var(--safe-bottom) + 100px
     ) !important;
 }
-
 #soundSelectList {
     flex: 0 0 auto !important;
     height: auto !important;
@@ -5391,18 +5280,15 @@ body.dark .playback-text-btn{
     overflow: visible !important;
     margin-bottom: 16px !important;
 }
-
 #confirmSounds {
     flex-shrink: 0 !important;
     margin-bottom: 12px;
 }
-
 /* ==== ミックス編集：ページ全体をスクロール ==== */
 html:has(.edit-page) {
     height: auto !important;
     min-height: 100%;
 }
-
 body:has(.edit-page) {
     height: auto !important;
     min-height: 100dvh;
@@ -5410,13 +5296,11 @@ body:has(.edit-page) {
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch;
 }
-
 body:has(.edit-page) .app-container {
     height: auto !important;
     min-height: 100dvh;
     overflow: visible !important;
 }
-
 body:has(.edit-page) .edit-page {
     height: auto !important;
     max-height: none !important;
@@ -5426,7 +5310,6 @@ body:has(.edit-page) .edit-page {
         var(--space-xl) + var(--safe-bottom) + 300px
     ) !important;
 }
-
 body:has(.edit-page) #soundList {
     flex: 0 0 auto !important;
     height: auto !important;
@@ -5434,14 +5317,10 @@ body:has(.edit-page) #soundList {
     overflow: visible !important;
     margin-bottom: 16px !important;
 }
-
 body:has(.edit-page) #saveEdit {
     flex-shrink: 0 !important;
     margin-bottom: 12px;
 }
-
-
-
 /* 購入エラー：画面中央の閉じられるダイアログ */
 .purchase-message-overlay {
     position: fixed;
@@ -5461,7 +5340,6 @@ body:has(.edit-page) #saveEdit {
     opacity: 0;
     animation: purchaseMessageFadeIn .18s ease forwards;
 }
-
 .purchase-message-card {
     width: min(100%, 420px);
     max-height: min(80dvh, 620px);
@@ -5476,7 +5354,6 @@ body:has(.edit-page) #saveEdit {
     box-shadow: 0 18px 55px rgba(0, 0, 0, 0.22);
     -webkit-overflow-scrolling: touch;
 }
-
 .purchase-message-icon {
     display: grid;
     place-items: center;
@@ -5489,14 +5366,12 @@ body:has(.edit-page) #saveEdit {
     font-size: 27px;
     font-weight: 800;
 }
-
 .purchase-message-card h2 {
     margin: 0 0 16px;
     font-size: clamp(18px, 4.5vw, 23px);
     line-height: 1.5;
     overflow-wrap: anywhere;
 }
-
 .purchase-message-card p {
     margin: 0 0 24px;
     font-size: clamp(14px, 3.5vw, 16px);
@@ -5504,7 +5379,6 @@ body:has(.edit-page) #saveEdit {
     white-space: pre-line;
     overflow-wrap: anywhere;
 }
-
 .purchase-message-close {
     width: 100%;
     min-height: 48px;
@@ -5517,26 +5391,21 @@ body:has(.edit-page) #saveEdit {
     font-weight: 700;
     cursor: pointer;
 }
-
 .purchase-message-close:active {
     transform: scale(0.98);
 }
-
 body.dark .purchase-message-card {
     border-color: rgba(255, 255, 255, 0.12);
     background: #202b3a;
     color: #f3f7fc;
 }
-
 body.dark .purchase-message-icon {
     background: rgba(255, 190, 90, 0.16);
     color: #ffd08a;
 }
-
 body.dark .purchase-message-close {
     background: #3979b5;
 }
-
 @keyframes purchaseMessageFadeIn {
     to { opacity: 1; }
 }
@@ -5544,13 +5413,11 @@ body.dark .purchase-message-close {
 /* =========================================
    購入メッセージ：Glassmorphism
 ========================================= */
-
 .purchase-message-overlay {
     background: rgba(28, 45, 65, 0.28);
     -webkit-backdrop-filter: blur(14px) saturate(135%);
     backdrop-filter: blur(14px) saturate(135%);
 }
-
 .purchase-message-card {
     position: relative;
     isolation: isolate;
@@ -5565,7 +5432,6 @@ body.dark .purchase-message-close {
         inset 0 1px 0 rgba(255, 255, 255, 0.78),
         inset 0 -1px 0 rgba(255, 255, 255, 0.18);
 }
-
 .purchase-message-card::before {
     content: "";
     position: absolute;
@@ -5581,7 +5447,6 @@ body.dark .purchase-message-close {
             transparent 72%
         );
 }
-
 .purchase-message-icon {
     background: rgba(255, 255, 255, 0.42);
     border: 1px solid rgba(255, 255, 255, 0.75);
@@ -5590,16 +5455,13 @@ body.dark .purchase-message-close {
         0 5px 16px rgba(80, 125, 165, 0.10),
         inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
-
 .purchase-message-card h2 {
     color: #31566d;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
 }
-
 .purchase-message-card p {
     color: #45657c;
 }
-
 .purchase-message-close {
     background: rgba(120, 185, 225, 0.38);
     color: #285574;
@@ -5614,16 +5476,13 @@ body.dark .purchase-message-close {
         transform 0.2s ease,
         box-shadow 0.2s ease;
 }
-
 .purchase-message-close:active {
     background: rgba(100, 165, 210, 0.48);
     transform: scale(0.98);
 }
-
 body.dark .purchase-message-overlay {
     background: rgba(0, 0, 0, 0.36);
 }
-
 body.dark .purchase-message-card {
     background: rgba(30, 42, 58, 0.64);
     border-color: rgba(255, 255, 255, 0.16);
@@ -5631,7 +5490,6 @@ body.dark .purchase-message-card {
         0 18px 50px rgba(0, 0, 0, 0.25),
         inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
-
 body.dark .purchase-message-card::before {
     background:
         linear-gradient(
@@ -5641,22 +5499,18 @@ body.dark .purchase-message-card::before {
             transparent 72%
         );
 }
-
 body.dark .purchase-message-icon {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.16);
     color: #a9d9ff;
 }
-
 body.dark .purchase-message-card h2 {
     color: #e4f2ff;
     text-shadow: none;
 }
-
 body.dark .purchase-message-card p {
     color: #c2d3e3;
 }
-
 body.dark .purchase-message-close {
     background: rgba(100, 160, 205, 0.26);
     color: #e4f2ff;
@@ -5665,7 +5519,6 @@ body.dark .purchase-message-close {
         0 5px 16px rgba(0, 0, 0, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.10);
 }
-
 /* 加入中プラン：操作できないボタン */
 #premiumOverlay .premium-btn:disabled {
     background: #D8DDE2 !important;
@@ -5678,7 +5531,6 @@ body.dark .purchase-message-close {
     filter: none !important;
     -webkit-tap-highlight-color: transparent;
 }
-
 #premiumOverlay .premium-btn:disabled:active,
 #premiumOverlay .premium-btn:disabled:hover {
     background: #D8DDE2 !important;
@@ -5686,13 +5538,11 @@ body.dark .purchase-message-close {
     box-shadow: none !important;
     transform: none !important;
 }
-
 body.dark #premiumOverlay .premium-btn:disabled {
     background: #424B55 !important;
     color: #C1C9D1 !important;
     border-color: rgba(255, 255, 255, 0.10) !important;
 }
-
 body.dark #premiumOverlay .premium-btn:disabled:active,
 body.dark #premiumOverlay .premium-btn:disabled:hover {
     background: #424B55 !important;
@@ -5702,7 +5552,6 @@ body.dark #premiumOverlay .premium-btn:disabled:hover {
 /* =========================================
    プレミアム：加入中ボタンのグレーアウト
 ========================================= */
-
 #premiumOverlay .premium-btn.premium-btn-current:disabled {
     background: #D8DDE2 !important;
     color: #626D77 !important;
@@ -5714,7 +5563,6 @@ body.dark #premiumOverlay .premium-btn:disabled:hover {
     transform: none !important;
     -webkit-tap-highlight-color: transparent;
 }
-
 #premiumOverlay .premium-btn.premium-btn-current:disabled:hover,
 #premiumOverlay .premium-btn.premium-btn-current:disabled:active {
     background: #D8DDE2 !important;
@@ -5722,13 +5570,11 @@ body.dark #premiumOverlay .premium-btn:disabled:hover {
     box-shadow: none !important;
     transform: none !important;
 }
-
 body.dark #premiumOverlay .premium-btn.premium-btn-current:disabled {
     background: #424B55 !important;
     color: #D0D8E0 !important;
     border-color: rgba(255, 255, 255, 0.12) !important;
 }
-
 body.dark #premiumOverlay .premium-btn.premium-btn-current:disabled:hover,
 body.dark #premiumOverlay .premium-btn.premium-btn-current:disabled:active {
     background: #424B55 !important;

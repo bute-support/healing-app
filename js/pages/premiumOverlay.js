@@ -1,9 +1,5 @@
 import { initPremiumMessage } from "../premium.js";
-import {
-  loadOverlay,
-  showOverlay,
-  hideOverlay
-} from "../ui/overlayManager.js";
+import { loadOverlay, showOverlay, hideOverlay } from "../ui/overlayManager.js";
 import {
   purchaseMonthly,
   purchaseYearly,
@@ -12,10 +8,7 @@ import {
   initPurchases,
   renderPrices
 } from "../services/purchaseService.js";
-import {
-  isPremium,
-  getPremiumType
-} from "../services/premiumService.js";
+import { isPremium, getPremiumType } from "../services/premiumService.js";
 import { showToast } from "../ui/toast.js";
 import { openTerms } from "./termsOverlay.js";
 import { registerSwipeBack } from "../ui/swipeBack.js";
@@ -91,7 +84,6 @@ function closePurchaseMessage() {
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") closePurchaseMessage();
 });
-
 
 const planConfig = {
   monthly: {
@@ -207,7 +199,6 @@ function updatePlanDisplay() {
     cards.forEach(({ card }) => container.append(card));
   }
 }
-
 
 function initSubscriptionManagementButton() {
   const button = document.getElementById("manageSubscriptionBtn");

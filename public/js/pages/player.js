@@ -1034,11 +1034,8 @@ function saveCurrentSound() {
         }
 
         saveSound(current);
-
         vibrate();
-
         showToast("保存しました");
-
         window.dispatchEvent(
             new Event("listsChanged")
         );
@@ -1339,7 +1336,6 @@ function stopAudio() {
             console.warn("[Player] audio reset error:", error);
         }
     }
-
     updateNativeNowPlaying(false);
 
     if (els.playBtn) {

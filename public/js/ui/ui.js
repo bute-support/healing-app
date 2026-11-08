@@ -6,11 +6,9 @@ export function updatePlayButton(
   button,
   isPlaying
 ) {
-
   if (!button) {
     return;
   }
-
 
   /* ==================================================
      既存のアイコンを取得
@@ -21,25 +19,15 @@ export function updatePlayButton(
       "#playIcon"
     );
 
-
   /* ==================================================
      アイコンが無い場合だけ作る
   ================================================== */
 
   if (!icon) {
-
-    icon =
-      document.createElement("i");
-
-    icon.id =
-      "playIcon";
-
-    button.appendChild(
-      icon
-    );
-
+    icon = document.createElement("i");
+    icon.id = "playIcon";
+    button.appendChild(icon);
   }
-
 
   /* ==================================================
      再生 / 一時停止
@@ -52,7 +40,6 @@ export function updatePlayButton(
       : "play"
   );
 
-
   /* ==================================================
      アクセシビリティ
   ================================================== */
@@ -64,12 +51,10 @@ export function updatePlayButton(
       : "再生"
   );
 
-
   button.setAttribute(
     "aria-pressed",
     String(isPlaying)
   );
-
 
   /* ==================================================
      Lucide再描画
@@ -79,9 +64,6 @@ export function updatePlayButton(
     typeof lucide !== "undefined" &&
     typeof lucide.createIcons === "function"
   ) {
-
     lucide.createIcons();
-
   }
-
 }

@@ -111,7 +111,5 @@ export async function openTerms() {
    利用規約を閉じる
 ========================================================= */
 export function closeTerms() {
-
   hideOverlay("termsOverlay");
-
 }
