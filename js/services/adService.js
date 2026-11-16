@@ -191,6 +191,20 @@ async function registerBannerListeners() {
 
   try {
     await AdMob.addListener(
+      BannerAdPluginEvents.SizeChanged,
+      info => {
+        const height = Math.max(0, Number(info?.height) || 0);
+        document.documentElement.style.setProperty(
+          "--ad-banner-height",
+          `${height}px`
+        );
+        recordAdDiagnostic("バナー：表示サイズ変更", {
+          width: info?.width,
+          height
+        });
+      }
+    );
+    await AdMob.addListener(
       BannerAdPluginEvents.Loaded,
       () => {
         recordAdDiagnostic("バナー：読み込み成功");
@@ -200,6 +214,10 @@ async function registerBannerListeners() {
     await AdMob.addListener(
       BannerAdPluginEvents.FailedToLoad,
       error => {
+        document.documentElement.style.setProperty(
+          "--ad-banner-height",
+          "0px"
+        );
         recordAdDiagnostic(
           "バナー：読み込み失敗",
           formatAdError(error)
@@ -270,7 +288,8 @@ export async function showBanner() {
     recordAdDiagnostic("バナー：同意情報取得", {
       status: consent.status,
       canRequestAds: consent.canRequestAds,
-      isConsentFormAvailable: consent.isConsentFormAvailable
+      isConsentFormAvailable: consent.isConsentFormAvailable,
+      privacyOptionsRequirementStatus: consent.privacyOptionsRequirementStatus
     });
 
     if (
@@ -308,6 +327,7 @@ export async function showBanner() {
 
     await AdMob.showBanner({
       adId,
+      npa: true,
       adSize: BannerAdSize.ADAPTIVE_BANNER,
       position: BannerAdPosition.BOTTOM_CENTER,
       margin: 0
@@ -340,6 +360,10 @@ export async function hideBanner() {
     );
   } finally {
     bannerShown = false;
+    document.documentElement.style.setProperty(
+      "--ad-banner-height",
+      "0px"
+    );
   }
 }
 
@@ -391,7 +415,8 @@ export async function showInterstitialAd(onComplete = () => {}) {
 
     recordAdDiagnostic("全画面広告：同意情報取得", {
       status: consent.status,
-      canRequestAds: consent.canRequestAds
+      canRequestAds: consent.canRequestAds,
+      privacyOptionsRequirementStatus: consent.privacyOptionsRequirementStatus
     });
 
     if (
@@ -493,7 +518,7 @@ export async function showInterstitialAd(onComplete = () => {}) {
       adUnitId: adId
     });
 
-    await AdMob.prepareInterstitial({ adId });
+    await AdMob.prepareInterstitial({ adId, npa: true });
 
     recordAdDiagnostic("全画面広告：prepareInterstitial処理完了");
 

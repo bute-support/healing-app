@@ -33,6 +33,7 @@ function escapeHtml(str) {
 }
 
 let settingsRoot = null;
+let quickListsRoot = null;
 let initialized = false;
 
 //ロード
@@ -64,7 +65,10 @@ export async function loadSettings() {
 
 //初期化
 function initSettings(root) {
+  quickListsRoot = root.querySelector("#quickListsOverlay");
+
   initOverlay(root);
+  initQuickLists(root);
   initAccordion(root);
   initTimer(root);
   initThemeButtons(root);
@@ -167,17 +171,20 @@ function initEvents(root) {
 }
 
 //保存情報更新
-function renderLists(){
-  if(!settingsRoot) return;
+function renderLists() {
+  if (!settingsRoot) return;
 
   cleanHistory();
 
-  previewConfigs.forEach(config=>{
+  previewConfigs.forEach(config => {
     createPreview(settingsRoot, config, renderLists);
   });
 
-  renderFavoriteInfo(settingsRoot, renderLists);
-  renderSavedInfo(settingsRoot, renderLists);
+  if (quickListsRoot) {
+    renderFavoriteInfo(quickListsRoot, renderLists);
+    renderSavedInfo(quickListsRoot, renderLists);
+  }
+
   window.lucide?.createIcons?.();
 }
 
@@ -236,6 +243,63 @@ function initOverlay(root) {
   };
 }
 
+// ==============================
+// お気に入り・保存一覧の開閉
+// ==============================
+
+function initQuickLists(root) {
+  const overlay = root.querySelector("#quickListsOverlay");
+  const closeBtn = root.querySelector("#closeQuickLists");
+
+  const favoriteBtn = document.getElementById("favoriteListBtn");
+  const savedBtn = document.getElementById("savedListBtn");
+
+  const favoriteSection = root.querySelector("#quickFavoritesSection");
+  const savedSection = root.querySelector("#quickSavedSection");
+  const title = root.querySelector("#quickListsTitle");
+
+  if (!overlay || !closeBtn) return;
+
+  const open = (type) => {
+    const isSaved = type === "saved";
+
+    favoriteSection?.classList.toggle("hidden", isSaved);
+    savedSection?.classList.toggle("hidden", !isSaved);
+
+    if (title) {
+      title.textContent = isSaved
+        ? "保存した音声"
+        : "お気に入り";
+    }
+
+    overlay.classList.add("active");
+
+    window.lucide?.createIcons?.();
+  };
+
+  favoriteBtn?.addEventListener("click", () => {
+    open("favorite");
+  });
+
+  savedBtn?.addEventListener("click", () => {
+    open("saved");
+  });
+
+  closeBtn.addEventListener("click", () => {
+    overlay.classList.remove("active");
+  });
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) {
+      overlay.classList.remove("active");
+    }
+  });
+
+  window.addEventListener("openQuickList", (e) => {
+    open(e.detail || "saved");
+  });
+}
+
 function initAccordion(root) {
 
   const items =
@@ -266,22 +330,36 @@ function initAccordion(root) {
   });
 }
 
-function initThemeButtons(root){
-  [
-    ["darkMode", "dark", true],
-    ["lightMode", "light", false]
-  ].forEach(([id, theme, isDark])=>{
+function initThemeButtons(root) {
+  const lightBtn = root.querySelector("#lightMode");
+  const darkBtn = root.querySelector("#darkMode");
 
-    const btn=root.querySelector(`#${id}`);
-    if(!btn) return;
+  if (!lightBtn || !darkBtn) return;
 
-    btn.onclick=()=>{
-      document.body.classList.toggle("dark",isDark);
-      localStorage.setItem("theme",theme);
-    };
-  });
+  const updateSelected = () => {
+    const isDark = document.body.classList.contains("dark");
+
+    lightBtn.classList.toggle("selected", !isDark);
+    darkBtn.classList.toggle("selected", isDark);
+
+    lightBtn.setAttribute("aria-pressed", String(!isDark));
+    darkBtn.setAttribute("aria-pressed", String(isDark));
+  };
+
+  lightBtn.onclick = () => {
+    document.body.classList.remove("dark");
+    localStorage.setItem("theme", "light");
+    updateSelected();
+  };
+
+  darkBtn.onclick = () => {
+    document.body.classList.add("dark");
+    localStorage.setItem("theme", "dark");
+    updateSelected();
+  };
+
+  updateSelected();
 }
-
 
 export function openMixSetting() {
   if (!settingsRoot) return;

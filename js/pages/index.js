@@ -124,6 +124,11 @@ function openPlayer(item) {
         "[Index] selected:",
         item
     );
+    // 現在のスクロール位置を保存
+    localStorage.setItem(
+        "indexScrollPosition",
+        String(window.scrollY)
+    );
     localStorage.setItem(
         "playItem",
         JSON.stringify(item)
@@ -142,10 +147,6 @@ function createSoundTile(item) {
         >
             <span class="sound-tile-label">
                 ${item.label || ""}
-            </span>
-            <span class="sound-tile-subtitle">
-                ${item.subtitle || ""}
-            </span>
         </button>
     `;
 }
@@ -171,10 +172,6 @@ function createTodayTile(item) {
                         : ""
                 }
                 ${item.label || ""}
-            </span>
-            <span class="sound-tile-subtitle">
-                ${item.subtitle || ""}
-            </span>
         </button>
     `;
 }
@@ -345,5 +342,36 @@ document.addEventListener(
             );
         }
         refreshIcons();
+
+        // Playerから戻った場合だけスクロール位置を復元
+        const shouldRestoreIndexScroll =
+            sessionStorage.getItem("restoreIndexScroll") === "1";
+
+        sessionStorage.removeItem("restoreIndexScroll");
+
+        const savedScrollPosition =
+            localStorage.getItem("indexScrollPosition");
+
+        if (
+            shouldRestoreIndexScroll &&
+            savedScrollPosition !== null
+        ) {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    window.scrollTo(
+                        0,
+                        Number(savedScrollPosition)
+                    );
+
+                    localStorage.removeItem(
+                        "indexScrollPosition"
+                    );
+                });
+            });
+        } else {
+            localStorage.removeItem(
+                "indexScrollPosition"
+            );
+        }
     }
 );

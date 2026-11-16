@@ -19,10 +19,23 @@
         <span class="back-btn icon-btn" style="visibility: hidden;" aria-hidden="true">
           <i data-lucide="settings"></i>
         </span>
-        <h1 id="title">今日の癒し</h1>
-        <button id="settingsBtn" class="icon-btn" aria-label="settings">
-          <i data-lucide="settings"></i>
-        </button>
+        <div class="header-actions">
+          <button type="button" id="favoriteListBtn" class="icon-btn" aria-label="お気に入り">
+            <i data-lucide="heart"></i>
+          </button>
+
+          <button type="button" id="savedListBtn" class="icon-btn" aria-label="保存した音声">
+            <i data-lucide="bookmark"></i>
+          </button>
+
+          <button type="button" id="mixListBtn" class="icon-btn" aria-label="ミックス">
+  <i data-lucide="list-music"></i>
+</button>
+
+<button id="settingsBtn" class="icon-btn" aria-label="設定">
+            <i data-lucide="settings"></i>
+          </button>
+        </div>
       </header>
 
       <div id="soundSections"></div>

@@ -18,6 +18,7 @@
 		9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9582B6822FE993A50072D4E8 /* SceneDelegate.swift */; };
 		9C3BD7713065E0FF00D675CE /* NowPlayingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD7703065E0E600D675CE /* NowPlayingPlugin.swift */; };
 		9C3BD7733065E27600D675CE /* MyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BD7723065E25F00D675CE /* MyViewController.swift */; };
+		9C769D6130A730CF00637BB2 /* TextSizePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C769D6030A730CF00637BB2 /* TextSizePlugin.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		958DCC722DB07C7200EA8C5F /* debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = debug.xcconfig; path = ../debug.xcconfig; sourceTree = SOURCE_ROOT; };
 		9C3BD7703065E0E600D675CE /* NowPlayingPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingPlugin.swift; sourceTree = "<group>"; };
 		9C3BD7723065E25F00D675CE /* MyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyViewController.swift; sourceTree = "<group>"; };
+		9C769D6030A730CF00637BB2 /* TextSizePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSizePlugin.swift; sourceTree = "<group>"; };
 		9CF03B64308B943800BBE12A /* HealingApp.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; name = HealingApp.storekit; path = App/HealingApp.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,6 +72,7 @@
 		504EC3061FED79650016851F /* App */ = {
 			isa = PBXGroup;
 			children = (
+				9C769D6030A730CF00637BB2 /* TextSizePlugin.swift */,
 				9C3BD7723065E25F00D675CE /* MyViewController.swift */,
 				9C3BD7703065E0E600D675CE /* NowPlayingPlugin.swift */,
 				9582B6822FE993A50072D4E8 /* SceneDelegate.swift */,
@@ -167,6 +170,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
+				9C769D6130A730CF00637BB2 /* TextSizePlugin.swift in Sources */,
 				9C3BD7713065E0FF00D675CE /* NowPlayingPlugin.swift in Sources */,
 				9C3BD7733065E27600D675CE /* MyViewController.swift in Sources */,
 				9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */,

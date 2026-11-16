@@ -97,26 +97,14 @@ function initSavedDelete(root, onChange){
 
 }
 
-
 // ==============================
 // どこからでも保存一覧を開く
 // ==============================
+
 export function openSavedSetting() {
-  const list = document.getElementById("savedSoundList");
-  const btn = document.getElementById("showAllSaved");
-
-  if (list?.classList.contains("hidden")) {
-    btn?.click();
-  }
-
-  document
-    .getElementById("settingsOverlay")
-    ?.classList.add("active");
-
-  const item = [...document.querySelectorAll(".setting-item")]
-    .find(item =>
-      item.querySelector(".setting-btn")?.textContent.includes("保存")
-    );
-
-  item?.classList.add("active");
+  window.dispatchEvent(
+    new CustomEvent("openQuickList", {
+      detail: "saved"
+    })
+  );
 }

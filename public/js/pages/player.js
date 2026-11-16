@@ -165,15 +165,29 @@ function getAudioContext() {
     return audioContext;
 }
 
+function getIndividualVolume(track) {
+    const value = Number(track?.individualVolume);
+
+    return Number.isFinite(value)
+        ? Math.max(0, Math.min(1, value))
+        : 1;
+}
+
 function applyVolume() {
     const sliderVolume = getSliderVolume();
-    const targetVolume = isMuted ? 0 : sliderVolume * sliderVolume;
+    const masterVolume = sliderVolume * sliderVolume;
 
     for (const track of getAudioPlayers()) {
         if (!track?.gainNode) continue;
 
         try {
             const context = getAudioContext();
+            const individualVolume = getIndividualVolume(track);
+
+            const targetVolume = isMuted
+                ? 0
+                : masterVolume * individualVolume * individualVolume;
+
             track.gainNode.gain.cancelScheduledValues(context.currentTime);
             track.gainNode.gain.setTargetAtTime(
                 targetVolume,
@@ -184,7 +198,6 @@ function applyVolume() {
             console.error("[Player] 音量調整エラー:", error);
         }
     }
-
     updateMuteIcon(isMuted || sliderVolume === 0);
 }
 
@@ -336,7 +349,6 @@ async function updateNativeNowPlaying(playing) {
     try {
         await nowPlaying.update({
             title: getTitle(),
-            subtitle: current.subtitle || "",
             playing,
             artwork: artwork || undefined
         });
@@ -485,7 +497,6 @@ function initPlayer() {
     els.detailTag = document.getElementById("detailTag");
     els.detailCategory = document.getElementById("detailCategory");
     els.detailTitle = document.getElementById("detailTitle");
-    els.subtitle = document.getElementById("subtitle");
     els.description = document.getElementById("description");
 
     els.playBtn = document.getElementById("playBtn");
@@ -561,44 +572,39 @@ function renderPlayer() {
         els.detailTitle.textContent = getTitle();
     }
 
-    if (els.subtitle) {
-        els.subtitle.textContent =
-            current.subtitle || "";
-    }
-
     if (els.description) {
-      const text = current.description || "";
+        const text = current.description || "";
 
-      els.description.replaceChildren();
-      els.description.classList.remove("is-overflowing");
+        els.description.replaceChildren();
+        els.description.classList.remove("is-overflowing");
 
-      const first = document.createElement("span");
-      first.className = "detail-description-text";
-      first.textContent = text;
-
-      els.description.appendChild(first);
-
-      requestAnimationFrame(() => {
-        if (first.scrollWidth > els.description.clientWidth + 1) {
+        if (text) {
             const track = document.createElement("div");
             track.className = "detail-description-track";
+
+            const first = document.createElement("span");
+            first.className = "detail-description-text";
+            first.textContent = text;
 
             const second = first.cloneNode(true);
 
             track.append(first, second);
-            els.description.replaceChildren(track);
+            els.description.appendChild(track);
             els.description.classList.add("is-overflowing");
 
-            // 文章の長さに応じて流れる時間を調整
-            const distance = track.scrollWidth / 2;
-            const duration = Math.max(12, distance / 25);
+            requestAnimationFrame(() => {
+                const textWidth = first.getBoundingClientRect().width;
+                const containerWidth = els.description.clientWidth;
 
-            track.style.setProperty(
-                "--marquee-duration",
-                `${duration}s`
-            );
-          }
-        });
+                const distance = textWidth;
+                const duration = Math.max(20, distance / 35);
+
+                track.style.setProperty(
+                    "--marquee-duration",
+                    `${duration}s`
+                );
+            });
+        }
     }
 
     if (els.detailTag) {
@@ -617,8 +623,10 @@ function renderPlayer() {
     }
 
     if (isMix()) {
-        renderMixImage();
+      document.body.classList.add("is-mix");
+      renderMixImage();
     } else {
+      document.body.classList.remove("is-mix");
         if (els.photo) {
             els.photo.src = toAssetUrl(current.image) || "";
             els.photo.classList.remove("hidden");
@@ -865,18 +873,18 @@ function bindEvents() {
     // 戻るボタン：再生を停止して前の画面へ戻る
     els.backPlayer?.addEventListener("click", () => {
       stopAudio();
+
+      sessionStorage.setItem("restoreIndexScroll", "1");
       location.replace("index.html");
     });
 
     // スライドで戻る
-    registerSwipeBack(
-        "player",
-        () => {
-            stopAudio();
-            location.replace("index.html");
-        },
-        () => true,
-        10
+    registerSwipeBack("player", () => {
+        stopAudio();
+        sessionStorage.setItem("restoreIndexScroll", "1");
+        location.replace("index.html");
+    },
+    () => true, 10
     );
 
     els.photo?.addEventListener(
@@ -1079,7 +1087,7 @@ function disposeTrack(track, reset = true) {
     } catch (_) {}
 }
 
-async function createBufferTrack(relativePath) {
+async function createBufferTrack(relativePath, individualVolume = 1) {
     const url = toAssetUrl(relativePath);
     if (!url) throw new Error("音源URLがありません");
 
@@ -1087,10 +1095,18 @@ async function createBufferTrack(relativePath) {
     const { buffer, loopStart, loopEnd } =
         await loadLoopAudio(context, url);
 
+    const safeIndividualVolume = Number.isFinite(Number(individualVolume))
+        ? Math.max(0, Math.min(1, Number(individualVolume)))
+        : 1;
+
     const gainNode = context.createGain();
+
+    const masterVolume = getSliderVolume() * getSliderVolume();
+
     gainNode.gain.value = isMuted
         ? 0
-        : getSliderVolume() * getSliderVolume();
+        : masterVolume * safeIndividualVolume * safeIndividualVolume;
+
     gainNode.connect(context.destination);
 
     return {
@@ -1099,6 +1115,7 @@ async function createBufferTrack(relativePath) {
         loopStart,
         loopEnd,
         gainNode,
+        individualVolume: safeIndividualVolume,
         source: null,
         startedAt: 0,
         offset: 0,
@@ -1185,7 +1202,7 @@ async function prepareMixTracks() {
     const members = getMixMembers();
 
     if (members.length === 0) {
-        throw new Error("ミックス内に再生できる音源がありません");
+        throw new Error("ミックスに音源がありません");
     }
 
     const urls = members.map(item => toAssetUrl(item.audio));
@@ -1198,25 +1215,50 @@ async function prepareMixTracks() {
     singleTrack = null;
 
     const existingUrls = mixTracks.map(track => track.url);
+
     const unchanged =
         urls.length === existingUrls.length &&
         urls.every((url, index) => url === existingUrls[index]);
 
-    if (!unchanged) {
-        for (const track of mixTracks) disposeTrack(track);
+    if (unchanged) {
+        // 音源が同じなら、個別音量だけ更新
+        mixTracks.forEach(track => {
+            const member = members[track.memberIndex];
+
+            if (member) {
+                track.individualVolume = getIndividualVolume(member);
+            }
+        });
+    } else {
+        // 音源が変わった場合はトラックを作り直す
+        for (const track of mixTracks) {
+            disposeTrack(track);
+        }
+
         mixTracks = [];
 
         const results = await Promise.allSettled(
-            members.map(item => createBufferTrack(item.audio))
+            members.map(item =>
+                createBufferTrack(
+                    item.audio,
+                    item.volume
+                )
+            )
         );
 
         const failedCount = results.filter(
             result => result.status === "rejected"
         ).length;
 
-        mixTracks = results
-            .filter(result => result.status === "fulfilled")
-            .map(result => result.value);
+        mixTracks = results.map((result, index) => {
+            if (result.status === "fulfilled") {
+                return {
+                    ...result.value,
+                    memberIndex: index
+                };
+            }
+            return null;
+        }) .filter(Boolean);
 
         if (failedCount > 0) {
             showToast(`${failedCount}個の音源を読み込めませんでした`);

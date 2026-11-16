@@ -7,20 +7,6 @@
     <ul class="settings-list">
 
       <li class="setting-item">
-        <button type="button" id="favoriteSettingBtn" class="setting-btn" aria-expanded="false">
-          お気に入り
-        </button>
-        <div class="setting-detail">
-          <div id="favoriteCount"></div>
-          <button id="showFavoriteSetting" class="app-btn auto-width-btn">
-            お気に入り一覧を見る
-          </button>
-
-          <div id="favoriteList" class="hidden"></div>
-        </div>
-      </li>
-
-      <li class="setting-item">
         <button class="setting-btn" aria-expanded="false">オフタイマー</button>
         <div class="setting-detail">
           <div class="timer-picker">
@@ -89,7 +75,7 @@
               30日
             </button>
             <button data-mode="off">
-              削除しない
+              削除<br>しない
             </button>
           </div>
           <!-- 説明 -->
@@ -104,24 +90,12 @@
       </li>
 
       <li class="setting-item">
-        <button type="button" id="savedSettingBtn" class="setting-btn" aria-expanded="false">
-          保存
-        </button>
-          <div class="setting-detail">
-            <div id="savedCount"></div>
-              <button id="showAllSaved" class="app-btn auto-width-btn">
-                保存一覧を見る
-              </button>
-              <div id="savedSoundList" class="hidden"></div>
-        </div>
-      </li>
-
-      <li class="setting-item">
         <button type="button" id="savedMixSettingBtn" class="setting-btn" aria-expanded="false">
           ミックス
         </button>
           <div class="setting-detail">
             <!-- 作成ボタン -->
+            <div id="mixCreationCount"></div>
             <button id="openMixCreate" class="app-btn  auto-width-btn">
               ミックス作成
             </button>
@@ -155,6 +129,38 @@
     <button id="closeSettings" type="button" class="icon-btn" aria-label="close">
       <i data-lucide="x"></i>
     </button>
+    </div>
+  </div>
+
+  <!-- お気に入り・保存一覧 -->
+  <div id="quickListsOverlay">
+    <div class="quick-lists-panel">
+      <div class="quick-lists-header">
+      <h2 id="quickListsTitle" class="settingsTitle">お気に入り</h2>
+        <button
+          id="closeQuickLists"
+          type="button"
+          class="icon-btn"
+          aria-label="閉じる"
+        >
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <section id="quickFavoritesSection" class="quick-list-section">
+        <div id="favoriteCount"></div>
+        <div id="favoriteList"></div>
+      </section>
+
+      <section id="quickSavedSection" class="quick-list-section hidden">
+        <div id="savedCount"></div>
+        <div id="savedSoundList"></div>
+      </section>
+      <section id="quickMixSection" class="quick-list-section hidden">
+        <div id="quickMixCount"></div>
+        <div id="quickMixList"></div>
+      </section>
+    </div>
   </div>
 
   <!-- =========================

@@ -4,7 +4,8 @@ import Capacitor
 class MyViewController: CAPBridgeViewController {
 
     override open func capacitorDidLoad() {
-        bridge?.registerPluginInstance(NowPlayingPlugin())
+      bridge?.registerPluginInstance(NowPlayingPlugin())
+      bridge?.registerPluginInstance(TextSizePlugin())
     }
 
     override func viewDidLoad() {

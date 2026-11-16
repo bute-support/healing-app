@@ -24,7 +24,6 @@ export function toggleFavorite(item) {
       title: item.type === "mix"
         ? item.title || item.name
         : item.title || item.label,
-      subtitle: item.subtitle || "",
       description: item.description || "",
       category: item.category || "",
       image: item.image,

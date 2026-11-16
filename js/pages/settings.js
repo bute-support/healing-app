@@ -18,6 +18,7 @@ import { loadOverlay } from "../ui/overlayManager.js";
 import { showMixMenu, closeMixMenu } from "../ui/mixMenu.js";
 import { renderFavoriteInfo } from "../settings/favoriteSetting.js";
 import { renderSavedInfo, openSavedSetting } from "../settings/savedSetting.js";
+import { renderQuickMixInfo } from "../settings/mixQuickSetting.js";
 import { initTimer, openTimerSetting } from "../settings/timerSetting.js";
 import { initHistorySettings, attachSwipeDelete } from "../settings/historySetting.js";
 import { createPreview, createSimpleItem, getTitle } from "../settings/previewList.js";
@@ -33,6 +34,7 @@ function escapeHtml(str) {
 }
 
 let settingsRoot = null;
+let quickListsRoot = null;
 let initialized = false;
 
 //ロード
@@ -64,7 +66,10 @@ export async function loadSettings() {
 
 //初期化
 function initSettings(root) {
+  quickListsRoot = root.querySelector("#quickListsOverlay");
+
   initOverlay(root);
+  initQuickLists(root);
   initAccordion(root);
   initTimer(root);
   initThemeButtons(root);
@@ -167,17 +172,27 @@ function initEvents(root) {
 }
 
 //保存情報更新
-function renderLists(){
-  if(!settingsRoot) return;
+function renderLists() {
+  if (!settingsRoot) return;
 
   cleanHistory();
 
-  previewConfigs.forEach(config=>{
+  const mixCreationCount = settingsRoot.querySelector("#mixCreationCount");
+  if (mixCreationCount) {
+    const max = isPremium() ? "無制限" : getRemixLimit();
+    mixCreationCount.textContent = `ミックス数 ${getRemixCount()}/${max}件`;
+  }
+
+  previewConfigs.forEach(config => {
     createPreview(settingsRoot, config, renderLists);
   });
 
-  renderFavoriteInfo(settingsRoot, renderLists);
-  renderSavedInfo(settingsRoot, renderLists);
+  if (quickListsRoot) {
+    renderFavoriteInfo(quickListsRoot, renderLists);
+    renderSavedInfo(quickListsRoot, renderLists);
+    renderQuickMixInfo(quickListsRoot, renderLists);
+  }
+
   window.lucide?.createIcons?.();
 }
 
@@ -236,6 +251,68 @@ function initOverlay(root) {
   };
 }
 
+// ==============================
+// お気に入り・保存一覧の開閉
+// ==============================
+
+function initQuickLists(root) {
+  const overlay = root.querySelector("#quickListsOverlay");
+  const closeBtn = root.querySelector("#closeQuickLists");
+
+  const favoriteBtn = document.getElementById("favoriteListBtn");
+  const savedBtn = document.getElementById("savedListBtn");
+  const mixBtn = document.getElementById("mixListBtn");
+
+  const sections = {
+    favorite: root.querySelector("#quickFavoritesSection"),
+    saved: root.querySelector("#quickSavedSection"),
+    mix: root.querySelector("#quickMixSection")
+  };
+
+  const title = root.querySelector("#quickListsTitle");
+
+  if (!overlay || !closeBtn) return;
+
+  const titles = {
+    favorite: "お気に入り",
+    saved: "保存した音声",
+    mix: "ミックス"
+  };
+
+  const open = (type) => {
+    const selected = sections[type] ? type : "favorite";
+
+    Object.entries(sections).forEach(([key, section]) => {
+      section?.classList.toggle("hidden", key !== selected);
+    });
+
+    if (title) {
+      title.textContent = titles[selected];
+    }
+
+    overlay.classList.add("active");
+    window.lucide?.createIcons?.();
+  };
+
+  favoriteBtn?.addEventListener("click", () => open("favorite"));
+  savedBtn?.addEventListener("click", () => open("saved"));
+  mixBtn?.addEventListener("click", () => open("mix"));
+
+  closeBtn.addEventListener("click", () => {
+    overlay.classList.remove("active");
+  });
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) {
+      overlay.classList.remove("active");
+    }
+  });
+
+  window.addEventListener("openQuickList", (e) => {
+    open(e.detail || "saved");
+  });
+}
+
 function initAccordion(root) {
 
   const items =
@@ -266,22 +343,36 @@ function initAccordion(root) {
   });
 }
 
-function initThemeButtons(root){
-  [
-    ["darkMode", "dark", true],
-    ["lightMode", "light", false]
-  ].forEach(([id, theme, isDark])=>{
+function initThemeButtons(root) {
+  const lightBtn = root.querySelector("#lightMode");
+  const darkBtn = root.querySelector("#darkMode");
 
-    const btn=root.querySelector(`#${id}`);
-    if(!btn) return;
+  if (!lightBtn || !darkBtn) return;
 
-    btn.onclick=()=>{
-      document.body.classList.toggle("dark",isDark);
-      localStorage.setItem("theme",theme);
-    };
-  });
+  const updateSelected = () => {
+    const isDark = document.body.classList.contains("dark");
+
+    lightBtn.classList.toggle("selected", !isDark);
+    darkBtn.classList.toggle("selected", isDark);
+
+    lightBtn.setAttribute("aria-pressed", String(!isDark));
+    darkBtn.setAttribute("aria-pressed", String(isDark));
+  };
+
+  lightBtn.onclick = () => {
+    document.body.classList.remove("dark");
+    localStorage.setItem("theme", "light");
+    updateSelected();
+  };
+
+  darkBtn.onclick = () => {
+    document.body.classList.add("dark");
+    localStorage.setItem("theme", "dark");
+    updateSelected();
+  };
+
+  updateSelected();
 }
-
 
 export function openMixSetting() {
   if (!settingsRoot) return;
