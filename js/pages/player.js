@@ -201,6 +201,89 @@ function applyVolume() {
     updateMuteIcon(isMuted || sliderVolume === 0);
 }
 
+/* ==================================================
+   タイマー用フェードアウト
+================================================== */
+
+function resetTimerFade() {
+    if (!audioContext) return;
+
+    const now = audioContext.currentTime;
+
+    for (const track of getAudioPlayers()) {
+        const param = track?.fadeGainNode?.gain;
+        if (!param) continue;
+
+        try {
+            param.cancelScheduledValues(now);
+            param.setTargetAtTime(1, now, 0.03);
+        } catch (error) {
+            console.warn("[Player] フェード解除エラー:", error);
+        }
+    }
+}
+
+function scheduleTimerFade(detail = {}) {
+    if (!isPremium()) {
+        resetTimerFade();
+        return;
+    }
+
+    if (!isAudioPlaying()) {
+        resetTimerFade();
+        return;
+    }
+
+    try {
+        const context = getAudioContext();
+        const now = context.currentTime;
+
+        const delayMs = Math.max(
+            0,
+            Number(detail.delayMs) || 0
+        );
+
+        const durationMs = Math.max(
+            10,
+            Math.min(
+                10000,
+                Number(detail.durationMs) || 10000
+            )
+        );
+
+        const startAt = now + delayMs / 1000;
+        const endAt = startAt + durationMs / 1000;
+
+        for (const track of getAudioPlayers()) {
+            const param = track?.fadeGainNode?.gain;
+            if (!param) continue;
+
+            // 再登録時は現在の音量から残り時間分をフェード
+            const currentValue = Math.max(
+                0,
+                Math.min(1, param.value)
+            );
+
+            param.cancelScheduledValues(now);
+            param.setValueAtTime(currentValue, now);
+
+            if (startAt > now) {
+                param.setValueAtTime(currentValue, startAt);
+            }
+
+            param.linearRampToValueAtTime(0, endAt);
+        }
+
+        console.log("[Player] プレミアムタイマーフェード予約:", {
+            delayMs,
+            durationMs,
+            tracks: getAudioPlayers().length
+        });
+    } catch (error) {
+        console.error("[Player] タイマーフェードエラー:", error);
+    }
+}
+
 function updateMuteIcon(muted) {
   const icon = document.getElementById("volumeIconLeft");
   if (!icon) return;
@@ -385,8 +468,22 @@ try {
 }
 
 /* ==================================================
-   オフタイマー終了時
+   オフタイマーのフェード・終了
 ================================================== */
+
+window.addEventListener(
+    "offTimerFadeSchedule",
+    event => {
+        scheduleTimerFade(event.detail || {});
+    }
+);
+
+window.addEventListener(
+    "offTimerFadeCancel",
+    () => {
+        resetTimerFade();
+    }
+);
 
 document.addEventListener(
     "offTimerFinished",
@@ -1085,6 +1182,10 @@ function disposeTrack(track, reset = true) {
     try {
         track.gainNode?.disconnect();
     } catch (_) {}
+
+    try {
+        track.fadeGainNode?.disconnect();
+    } catch (_) {}
 }
 
 async function createBufferTrack(relativePath, individualVolume = 1) {
@@ -1100,6 +1201,7 @@ async function createBufferTrack(relativePath, individualVolume = 1) {
         : 1;
 
     const gainNode = context.createGain();
+    const fadeGainNode = context.createGain();
 
     const masterVolume = getSliderVolume() * getSliderVolume();
 
@@ -1107,7 +1209,11 @@ async function createBufferTrack(relativePath, individualVolume = 1) {
         ? 0
         : masterVolume * safeIndividualVolume * safeIndividualVolume;
 
-    gainNode.connect(context.destination);
+    // 通常音量とタイマーフェードを別々に制御
+    fadeGainNode.gain.value = 1;
+
+    gainNode.connect(fadeGainNode);
+    fadeGainNode.connect(context.destination);
 
     return {
         url,
@@ -1115,6 +1221,7 @@ async function createBufferTrack(relativePath, individualVolume = 1) {
         loopStart,
         loopEnd,
         gainNode,
+        fadeGainNode,
         individualVolume: safeIndividualVolume,
         source: null,
         startedAt: 0,
@@ -1346,6 +1453,10 @@ async function startAudio() {
 ================================================== */
 
 function pauseAudio() {
+    // 一時停止時はフェードを解除して音量を戻す
+    // 再生再開時にタイマー残り時間から再予約する
+    resetTimerFade();
+
     const tracks = getAudioPlayers();
 
     for (const track of tracks) {
@@ -1368,6 +1479,9 @@ function pauseAudio() {
 
 function stopAudio() {
     console.trace("[Player] stopAudio called from");
+
+    // 手動停止・タイマー終了後にフェード状態を残さない
+    resetTimerFade();
 
     const tracks = getAudioPlayers();
 

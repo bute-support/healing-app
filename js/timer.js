@@ -1,5 +1,6 @@
 let timerId = null;
 let timeoutCallback = null;
+let scheduledEnd = null;
 
 /* ========================================
    タイマー開始・再登録
@@ -24,6 +25,11 @@ export function startOffTimer(callback) {
 
   /* タイマー未設定 */
   if (!end) {
+    if (scheduledEnd !== null) {
+      window.dispatchEvent(new Event("offTimerFadeCancel"));
+      scheduledEnd = null;
+    }
+
     console.log(
       "[Timer] 未設定"
     );
@@ -47,6 +53,22 @@ export function startOffTimer(callback) {
     finishTimer();
     return;
   }
+
+  /* プレミアム用フェードアウトを予約 */
+  if (scheduledEnd !== null && scheduledEnd !== end) {
+    window.dispatchEvent(new Event("offTimerFadeCancel"));
+  }
+
+  scheduledEnd = end;
+
+  window.dispatchEvent(
+    new CustomEvent("offTimerFadeSchedule", {
+      detail: {
+        delayMs: Math.max(0, remain - 10000),
+        durationMs: Math.min(10000, remain)
+      }
+    })
+  );
 
   /* 残り時間でタイマーを再登録 */
   timerId =
@@ -73,6 +95,12 @@ export function clearOffTimer() {
     timerId = null;
   }
   timeoutCallback = null;
+  scheduledEnd = null;
+
+  /* フェード予約を解除 */
+  window.dispatchEvent(
+    new Event("offTimerFadeCancel")
+  );
 
   /* タイマー情報を完全削除 */
   localStorage.removeItem(
@@ -92,6 +120,7 @@ function finishTimer() {
     "[Timer] finishTimer()"
   );
   timerId = null;
+  scheduledEnd = null;
 
   /* 終了時刻を削除 */
   localStorage.removeItem(

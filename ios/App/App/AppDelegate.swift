@@ -8,9 +8,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
         // Disable Publisher First-Party ID before Google Mobile Ads initializes.
-        MobileAds.shared.requestConfiguration
-          .setPublisherFirstPartyIDEnabled(false)
+        MobileAds.shared.requestConfiguration.setPublisherFirstPartyIDEnabled(false)
+        // Disable automatic coarse location collection.
+        MobileAds.shared.requestConfiguration.coarseLocationCollectionEnabled = false
+        // Disable ad personalization.
+        MobileAds.shared.requestConfiguration.publisherPrivacyPersonalizationState = .disabled
         return true
     }
 

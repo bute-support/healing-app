@@ -22,8 +22,14 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-3588583677502543~2420069105</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>お客様に適した広告の表示や広告効果の測定のため、他社のアプリやウェブサイトでの利用情報と関連付けてデバイスの広告識別子を使用することがあります。許可しない場合も広告は表示されます。</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -70,7 +76,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-	<key>GADApplicationIdentifier</key>
-    <string>ca-app-pub-3588583677502543~2420069105</string>
 </dict>
 </plist>

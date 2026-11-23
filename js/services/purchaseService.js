@@ -24,8 +24,32 @@ function typeFromProductId(id = "") {
   return null;
 }
 
-function applyCustomerInfo(info) {
-  const ent = info?.entitlements?.active?.[ENTITLEMENT_ID];
+function applyCustomerInfo(info, source = "unknown") {
+  const activeSubscriptions = info?.activeSubscriptions || [];
+  const activeEntitlements = info?.entitlements?.active || {};
+  const allEntitlements = info?.entitlements?.all || {};
+
+  console.log("[Purchases][DIAG] CustomerInfo source:", source);
+  console.log(
+    "[Purchases][DIAG] activeSubscriptions:",
+    JSON.stringify(activeSubscriptions)
+  );
+  console.log(
+    "[Purchases][DIAG] active entitlement IDs:",
+    JSON.stringify(Object.keys(activeEntitlements))
+  );
+  console.log(
+    "[Purchases][DIAG] all entitlement IDs:",
+    JSON.stringify(Object.keys(allEntitlements))
+  );
+
+  const ent = activeEntitlements[ENTITLEMENT_ID];
+
+  console.log(
+    "[Purchases][DIAG] premium entitlement detail:",
+    JSON.stringify(ent || null)
+  );
+
   setPremiumCache({
     active: !!ent,
     type: ent ? typeFromProductId(ent.productIdentifier) : null
@@ -57,7 +81,16 @@ async function ensureSdk() {
       await P.configure({ apiKey: API_KEY });
       console.log("[Purchases] configure completed");
 
-      await P.addCustomerInfoUpdateListener(applyCustomerInfo);
+      const appUserResult = await P.getAppUserID();
+      console.log(
+        "[Purchases][DIAG] RevenueCat App User ID:",
+        appUserResult?.appUserID || appUserResult
+      );
+
+      await P.addCustomerInfoUpdateListener((info) => {
+        console.log("[Purchases][DIAG] CustomerInfo listener fired");
+        applyCustomerInfo(info, "listener");
+      });
       console.log("[Purchases] listener registered");
 
       return true;
@@ -97,6 +130,7 @@ export async function initPurchases() {
     }
 
     const P = plugin();
+    await P.invalidateCustomerInfoCache();
     const { customerInfo } = await P.getCustomerInfo();
 
     console.log(

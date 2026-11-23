@@ -1,0 +1,42 @@
+diff --git a/node_modules/@capacitor-community/admob/Package.swift b/node_modules/@capacitor-community/admob/Package.swift
+index 297eaac..df90f58 100644
+--- a/node_modules/@capacitor-community/admob/Package.swift
++++ b/node_modules/@capacitor-community/admob/Package.swift
+@@ -11,7 +11,7 @@ let package = Package(
+     ],
+     dependencies: [
+         .package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", from: "8.0.0"),
+-        .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", exact: "13.11.0"),
++        .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", exact: "13.13.0"),
+         .package(url: "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git", .upToNextMinor(from: "3.1.0"))
+     ],
+     targets: [
+diff --git a/node_modules/@capacitor-community/admob/ios/Sources/AdMobPlugin/Banner/BannerExecutor.swift b/node_modules/@capacitor-community/admob/ios/Sources/AdMobPlugin/Banner/BannerExecutor.swift
+index 037e83e..c3b6ccd 100644
+--- a/node_modules/@capacitor-community/admob/ios/Sources/AdMobPlugin/Banner/BannerExecutor.swift
++++ b/node_modules/@capacitor-community/admob/ios/Sources/AdMobPlugin/Banner/BannerExecutor.swift
+@@ -139,7 +139,7 @@ class BannerExecutor: NSObject, BannerViewDelegate {
+                 [NSLayoutConstraint(item: bannerView,
+                                     attribute: self.adPosition == "TOP_CENTER" ? .top : .bottom,
+                                     relatedBy: .equal,
+-                                    toItem: rootViewController.view.safeAreaLayoutGuide,
++                                    toItem: rootViewController.view,
+                                     attribute: self.adPosition == "TOP_CENTER" ? .top : .bottom,
+                                     multiplier: 1,
+                                     constant: CGFloat(Int(self.Margin) * -1)),
+diff --git a/node_modules/@capacitor-community/admob/ios/Sources/AdMobPlugin/Consent/ConsentExecutor.swift b/node_modules/@capacitor-community/admob/ios/Sources/AdMobPlugin/Consent/ConsentExecutor.swift
+index 0de7fbb..5d10a7e 100644
+--- a/node_modules/@capacitor-community/admob/ios/Sources/AdMobPlugin/Consent/ConsentExecutor.swift
++++ b/node_modules/@capacitor-community/admob/ios/Sources/AdMobPlugin/Consent/ConsentExecutor.swift
+@@ -20,8 +20,9 @@ class ConsentExecutor: NSObject {
+         ConsentInformation.shared.requestConsentInfoUpdate(
+             with: parameters,
+             completionHandler: { error in
+-                if error != nil {
+-                    call.reject("Request consent info failed")
++                if let error = error {
++                    NSLog("[AdMob UMP] Consent info update failed: %@", error.localizedDescription)
++                    call.reject("Request consent info failed: " + error.localizedDescription)
+                 } else {
+                     call.resolve([
+                         "status": self.getConsentStatusString(ConsentInformation.shared.consentStatus),

@@ -303,6 +303,12 @@ document.addEventListener(
         console.log(
             "[Index] DOMContentLoaded"
         );
+        // プレミアム状態が変わったらトップ画面を再描画
+        window.addEventListener("premiumChanged", () => {
+            console.log("[Index] premiumChanged: re-rendering sections");
+            renderSections();
+        });
+
         // まずindexを表示
         renderSections();
         // 設定を後から読み込む

@@ -13,21 +13,51 @@ let initialized = false;
 let bannerShown = false;
 let bannerListenersRegistered = false;
 
+// ==============================
+// App Tracking Transparency
+// ==============================
+
+let attRequestCompleted = false;
+
+async function requestATTIfNeeded() {
+  if (Capacitor.getPlatform() !== "ios") {
+    return;
+  }
+
+  if (attRequestCompleted) {
+    return;
+  }
+
+  try {
+    const result = await AdMob.trackingAuthorizationStatus();
+
+    recordAdDiagnostic("ATT：現在の許可状態", {
+      status: result.status
+    });
+
+    if (result.status === "notDetermined") {
+      recordAdDiagnostic("ATT：許可画面を表示");
+
+      await AdMob.requestTrackingAuthorization();
+
+      const updated = await AdMob.trackingAuthorizationStatus();
+
+      recordAdDiagnostic("ATT：許可画面終了", {
+        status: updated.status
+      });
+    }
+
+    attRequestCompleted = true;
+
+  } catch (error) {
+    recordAdDiagnostic(
+      "ATT：処理失敗",
+      formatAdError(error)
+    );
+  }
+}
+
 const DIAG_KEY = "adDiagnostics";
-
-const TEST_BANNER_IDS = {
-  android: "ca-app-pub-3588583677502543/5289987059",
-  ios: "ca-app-pub-3940256099942544/2934735716"
-};
-
-const TEST_INTERSTITIAL_IDS = {
-  android: "ca-app-pub-3588583677502543/8307032637",
-  ios: "ca-app-pub-3940256099942544/4411468910"
-};
-
-// ==============================
-// 広告診断パネル
-// ==============================
 
 function getDiagnostics() {
   try {
@@ -37,115 +67,31 @@ function getDiagnostics() {
   }
 }
 
-function renderDiagnostics() {
-  const content = document.getElementById("ad-diagnostics-content");
-  if (!content) return;
+const ADS_ENABLED = true;
 
-  const history = getDiagnostics();
+// true：テスト広告
+// false：本番広告
+const USE_TEST_ADS = true;
 
-  content.textContent = history.length
-    ? history.map(item =>
-        `[${item.time}] ${item.type}` +
-        (item.detail ? `\n${JSON.stringify(item.detail)}` : "")
-      ).join("\n\n")
-    : "まだ診断記録はありません。";
-}
+const TEST_BANNER_IDS = {
+  android: "ca-app-pub-3940256099942544/9214589741",
+  ios: "ca-app-pub-3940256099942544/2934735716"
+};
 
-function ensureDiagnosticsPanel() {
-  if (typeof document === "undefined") return;
+const PRODUCTION_BANNER_IDS = {
+  android: "ca-app-pub-3588583677502543/5289987059",
+  ios: "ca-app-pub-3588583677502543/0069"
+};
 
-  if (!document.body) {
-    document.addEventListener(
-      "DOMContentLoaded",
-      ensureDiagnosticsPanel,
-      { once: true }
-    );
-    return;
-  }
+const TEST_INTERSTITIAL_IDS = {
+  android: "ca-app-pub-3940256099942544/1033173712",
+  ios: "ca-app-pub-3940256099942544/4411468910"
+};
 
-  if (document.getElementById("ad-diagnostics-wrap")) return;
-
-  const wrap = document.createElement("div");
-  wrap.id = "ad-diagnostics-wrap";
-
-  Object.assign(wrap.style, {
-    position: "fixed",
-    top: "calc(env(safe-area-inset-top, 0px) + 8px)",
-    right: "8px",
-    zIndex: "2147483647",
-    fontFamily: "monospace"
-  });
-
-  const toggle = document.createElement("button");
-  toggle.textContent = "広告診断 ▾";
-
-  Object.assign(toggle.style, {
-    padding: "8px 12px",
-    border: "1px solid #888",
-    borderRadius: "8px",
-    background: "#222",
-    color: "#fff",
-    fontSize: "12px"
-  });
-
-  const panel = document.createElement("div");
-
-  Object.assign(panel.style, {
-    display: "none",
-    width: "min(90vw, 420px)",
-    maxHeight: "40vh",
-    overflow: "auto",
-    marginTop: "6px",
-    padding: "10px",
-    borderRadius: "8px",
-    background: "#181818",
-    color: "#fff",
-    border: "1px solid #777",
-    boxShadow: "0 2px 12px rgba(0,0,0,.4)"
-  });
-
-  const clear = document.createElement("button");
-  clear.textContent = "記録を消去";
-
-  Object.assign(clear.style, {
-    padding: "5px 9px",
-    marginBottom: "8px",
-    background: "#444",
-    color: "#fff",
-    border: "1px solid #888",
-    borderRadius: "5px"
-  });
-
-  clear.addEventListener("click", () => {
-    localStorage.removeItem(DIAG_KEY);
-    renderDiagnostics();
-  });
-
-  const content = document.createElement("pre");
-  content.id = "ad-diagnostics-content";
-
-  Object.assign(content.style, {
-    margin: "0",
-    whiteSpace: "pre-wrap",
-    overflowWrap: "anywhere",
-    fontSize: "11px",
-    lineHeight: "1.5"
-  });
-
-  panel.append(clear, content);
-
-  toggle.addEventListener("click", () => {
-    panel.style.display =
-      panel.style.display === "none" ? "block" : "none";
-
-    renderDiagnostics();
-  });
-
-  wrap.append(toggle, panel);
-  document.body.appendChild(wrap);
-
-  renderDiagnostics();
-}
+const PRODUCTION_INTERSTITIAL_IDS = {
+  android: "ca-app-pub-3588583677502543/8307032637",
+  ios: "ca-app-pub-3588583677502543/7070"
+};
 
 function recordAdDiagnostic(type, detail = null) {
   const entry = {
@@ -167,8 +113,6 @@ function recordAdDiagnostic(type, detail = null) {
 
   console.log("[AdDiagnostics]", entry);
 
-  ensureDiagnosticsPanel();
-  renderDiagnostics();
 }
 
 function formatAdError(error) {
@@ -178,7 +122,6 @@ function formatAdError(error) {
   };
 }
 
-ensureDiagnosticsPanel();
 
 // ==============================
 // バナー広告イベント監視
@@ -262,6 +205,12 @@ async function registerBannerListeners() {
 export async function showBanner() {
   recordAdDiagnostic("バナー：表示処理開始");
 
+  if (!ADS_ENABLED) {
+    recordAdDiagnostic("バナー：一時停止中");
+    await hideBanner();
+    return;
+  }
+
   if (!Capacitor.isNativePlatform()) {
     recordAdDiagnostic("バナー：ネイティブ環境ではないため終了");
     return;
@@ -310,6 +259,8 @@ export async function showBanner() {
       return;
     }
 
+    await requestATTIfNeeded();
+
     if (!initialized) {
       recordAdDiagnostic("AdMob：初期化開始");
       await AdMob.initialize();
@@ -318,7 +269,7 @@ export async function showBanner() {
     }
 
     const platform = Capacitor.getPlatform();
-    const adId = TEST_BANNER_IDS[platform];
+    const adId = (USE_TEST_ADS ? TEST_BANNER_IDS : PRODUCTION_BANNER_IDS)[platform];
 
     recordAdDiagnostic("バナー：広告リクエスト開始", {
       platform,
@@ -396,6 +347,12 @@ export async function showInterstitialAd(onComplete = () => {}) {
 
   recordAdDiagnostic("全画面広告：表示処理開始");
 
+  if (!ADS_ENABLED) {
+    recordAdDiagnostic("全画面広告：一時停止中");
+    await finish();
+    return;
+  }
+
   if (!Capacitor.isNativePlatform()) {
     recordAdDiagnostic("全画面広告：ネイティブ環境ではない");
     await finish();
@@ -432,6 +389,8 @@ export async function showInterstitialAd(onComplete = () => {}) {
       return;
     }
 
+    await requestATTIfNeeded();
+
     if (!initialized) {
       recordAdDiagnostic("AdMob：初期化開始");
       await AdMob.initialize();
@@ -440,7 +399,7 @@ export async function showInterstitialAd(onComplete = () => {}) {
     }
 
     const platform = Capacitor.getPlatform();
-    const adId = TEST_INTERSTITIAL_IDS[platform];
+    const adId = (USE_TEST_ADS ? TEST_INTERSTITIAL_IDS : PRODUCTION_INTERSTITIAL_IDS)[platform];
 
     if (!adId) {
       recordAdDiagnostic("全画面広告：広告IDが見つからない", {
